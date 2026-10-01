@@ -58,7 +58,7 @@ eq(L.ARC.ARC_PUZZLES.map(p => [p.lv, p.train, p.test]), zh.ARC.ARC_PUZZLES.map(p
 const len = t => [...String(t)].length; let longest = [];
 for (const [k, v] of Object.entries(L.POOLS)) { if (k === 'osworld' || k === 'arc') continue; v.forEach((q, i) => { const a = Math.max(...q.opts.filter(o => o.ok).map(o => len(o.t))), b = Math.max(...q.opts.filter(o => !o.ok).map(o => len(o.t))); if (a > b) longest.push(`${k}[${i}] ${String(q.u || q.q).slice(0, 30)}`); }); }
 // 残留中文（日语允许汉字，只查简体专用常见字）
-const all = ['bank.js', 'chats.js', 'arc.js', 'lv4.js'].filter(f => fs.existsSync(path.join(root, 'i18n', lang, f))).map(f => fs.readFileSync(path.join(root, 'i18n', lang, f), 'utf8')).join('\n').replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+const all = ['bank.js', 'chats.js', 'arc.js', 'lv4.js'].filter(f => fs.existsSync(path.join(root, 'i18n', lang, f))).map(f => fs.readFileSync(path.join(root, 'i18n', lang, f), 'utf8')).join('\n').replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/"(豆包|GPT-5 系)"/g, '""');   // 模型鉴定 id 按规定不翻译，不算残留
 const zhRe = lang === 'tw' || lang === 'hk' ? /(?!)/g : lang === 'ja' ? /[这个们说为么还没吗吧呢么让对话题时间问题电脑]/g : /[一-鿿]/g;
 const leftover = [...new Set((all.match(zhRe) || []))];
 console.log(`[${lang}] 结构问题 ${errs.length} 个 · 正确答案最长 ${longest.length} 题 · 残留中文字 ${leftover.length} 个`);

@@ -1,3 +1,4 @@
+// 已过时（保留作历史记录）：一局的编排还是旧版（旧名场面标题、已停用的“深度思考模式”开场），和现在的游戏对不上。看人格/参数量分布请用 qa/sim.cjs（加载真实的 app.js）
 // 统计随机作答时各标签/各家 AI 味的均值和标准差，作为“普通人”的基准
 const fs = require('fs');
 eval(['bank.js', 'chats.js'].map(f => fs.readFileSync(__dirname + '/../' + f, 'utf8')).join('\n').replace(/^const /gm, 'var '));

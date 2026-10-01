@@ -50,7 +50,7 @@ def sync(v="tw"):
         for i in ids:
             c = conv(i)
             if c != i: t = t.replace(f'"{c}"', f'"{i}"')
-        open(os.path.join(out, f), "w", encoding="utf-8").write(t)
+        open(os.path.join(out, f), "w", encoding="utf-8", newline="\n").write(t)
     app = open(os.path.join(ROOT, "app.js"), encoding="utf-8").read()
     table = {}
     for line in app.split("\n"):
@@ -58,7 +58,7 @@ def sync(v="tw"):
             if seg in KEEP or seg in table: continue
             c = conv(seg)
             if c != seg: table[seg] = c
-    json.dump(table, open(os.path.join(out, "ui.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump(table, open(os.path.join(out, "ui.json"), "w", encoding="utf-8", newline="\n"), ensure_ascii=False, indent=1)
     return len(table)
 
 

@@ -701,7 +701,7 @@ function personalNames() {
   const T = S.traits, F = S.flavor, out = [];
   const add = (cond, n) => { if (cond && !out.includes(n)) out.push(n); };
   const top = Object.entries(F).sort((a, b) => b[1] - a[1])[0];
-  const byFlavor = { "DeepSeek": "DeepSleep", "豆包": "豆沙包", "Codex": "SHA仙人", "GPT-5 系": "SHA仙人", "Claude": "You're-Absolutely-Right", "GPT-4o": "接住你GPT", "Gemini": "夸夸机Pro", "Kimi": "发我全文", "Grok": "Grok嘴替" };
+  const byFlavor = { "DeepSeek": "DeepSleep", "豆包": "豆沙包", "Codex": "SHA仙人", "GPT-5 系": "SHA仙人", "GPT-5": "SHA仙人", "Claude": "You're-Absolutely-Right", "GPT-4o": "接住你GPT", "Gemini": "夸夸机Pro", "Kimi": "发我全文", "Grok": "Grok嘴替" };
   if (top) add(true, byFlavor[top[0]] || "AI味浓缩版");
   add(S.caved || (T.syc || 0) >= 4, "Sorry-Bot");
   add((T.jail || 0) >= 2, "DAN本DAN");
@@ -808,7 +808,7 @@ function rowScore(row) {
 }
 
 // 人格：先看你选过哪家模型的招牌台词（AI 味），再看行为标签，最后看六个聊天轴。不做人为配平。
-const FLAVOR_TO = { "Claude": "claude", "GPT-4o": "gpt4o", "Codex": "gpt5", "GPT-5 系": "gpt5", "ChatGPT": "gpt5", "DeepSeek": "deepseek", "Gemini": "gemini", "豆包": "doubao", "Kimi": "kimi", "Grok": "grok" };
+const FLAVOR_TO = { "Claude": "claude", "GPT-4o": "gpt4o", "Codex": "gpt5", "GPT-5 系": "gpt5", "GPT-5": "gpt5", "ChatGPT": "gpt5", "DeepSeek": "deepseek", "Gemini": "gemini", "豆包": "doubao", "Kimi": "kimi", "Grok": "grok" };
 // 各家的刻板印象对应哪些行为标签
 const TRAIT_TO = {
   doubao: { syc: 1.5, warm: .5, hall: .5 }, claude: { syc: 1, preach: 1, verbose: 1 }, deepseek: { nerd: 2, chaos: .5, verbose: .5 },
@@ -1498,6 +1498,7 @@ function inApp() {
 const codeOfNav = t => { t = t.toLowerCase(); return t.startsWith("zh") ? (/hant|-tw|-hk|-mo/.test(t) ? "hant" : "zh") : t.slice(0, 2); };
 
 (function boot() {
+  if (window.__headless) return;   // qa/headless.cjs 在 Node 里加载整套代码做模拟时，不启动页面
   // 语言跳转会把来源冲掉：先记在本标签页里
   try { const r = extRef(); if (r) sessionStorage.setItem("humanbench:rf", r); } catch (e) { }
   // 语言：记住用户手动选的

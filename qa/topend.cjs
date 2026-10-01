@@ -1,9 +1,11 @@
-// 顶端难度模拟：玩家水平 A，答对率按题目档位 B[lv]；自适应抽题/计分/阶梯与游戏一致（参数可调）
+// 顶端难度模拟：玩家水平 A，答对率按题目档位 B[lv]；自适应抽题/计分/阶梯是 app.js 的简化复刻，参数可用 CFG='{…}' 改着试
+// 默认值对齐 app.js 现行规则（LV_VAL、Boss 条件、第 20 题前不出 Boss、分段阶梯、∞ 门槛）；要看真实代码的结果用 qa/sim.cjs
 const fs = require('fs');
 const src = f => fs.readFileSync(__dirname + '/../' + f, 'utf8').replace(/^const /gm, 'var ').replace(/^let /gm, 'var ');
 global.window = {}; var shuffle = a => a; eval(src('bank.js')); eval(src('arc.js')); eval(src('lv4.js'));
-const CFG = Object.assign({ LV_VAL: { 1: .7, 2: .85, 3: 1, 4: 1 }, B: { 1: -1.2, 2: 0, 3: 1.2, 4: 2.2 }, maxLv: 3,
-  lo: .2, span: .65, infTheta: .95, infMiss: 1, tgt: acc => acc >= .8 ? 3 : acc >= .5 ? 2 : 1, arcBoost: 1 }, JSON.parse(process.env.CFG || '{}'));
+const CFG = Object.assign({ LV_VAL: { 1: .7, 2: .85, 3: 1, 4: 1.15 }, B: { 1: -1.2, 2: 0, 3: 1.2, 4: 2.2 }, maxLv: 4,
+  lo: .2, span: .65, knee: .6, slope: 15.4, infTheta: 1.02, infMiss: 2, bossFrom: 19, arcBoost: 1,
+  tgt: (acc, log) => acc >= .84 && log.slice(-6).some(r => r.lv >= 3 && r.ok) ? 4 : acc >= .8 ? 3 : acc >= .5 ? 2 : 1 }, JSON.parse(process.env.CFG || '{}'));
 if (CFG.tgtCode) CFG.tgt = eval(CFG.tgtCode);
 const randn = () => Math.sqrt(-2 * Math.log(Math.random())) * Math.cos(2 * Math.PI * Math.random());
 const pickOne = a => a[Math.random() * a.length | 0];

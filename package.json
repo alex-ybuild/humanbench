@@ -5,7 +5,8 @@
   "scripts": {
     "build": "python3 build.py",
     "check": "node qa/validate_lang.cjs en && node qa/validate_lang.cjs ja",
-    "e2e": "node qa/release_shot.cjs"
+    "e2e": "node qa/release_shot.cjs",
+    "sim": "node qa/sim.cjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
